@@ -6,9 +6,9 @@
   <title>Solicitar Exclusão de Dados — Políticas IA</title>
   <style>
     :root {
-      --bg: #0a0a0f; --bg-elev: #13161f; --bg-card: rgba(255,255,255,.04);
-      --text: #e8e8ec; --text-muted: #9ca3af; --text-dim: #6b7280;
-      --accent: #a78bfa; --accent-pink: #f472b6; --border: rgba(255,255,255,.08);
+      --bg: #efe9db; --bg-elev: #13161f; --bg-card: #ffffff;
+      --text: #1c1a15; --text-muted: #6a6350; --text-dim: #6b7280;
+      --accent: #1a2b4a; --accent-pink: #c9a227; --border: #cdc4ad;
       --good: #10b981; --low: #ef4444;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +21,7 @@
     .back-link { display: inline-block; margin-bottom: 24px; font-size: 14px; color: var(--accent); text-decoration: none; }
     .back-link:hover { text-decoration: underline; }
     h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px;
-      background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text;
+      background: none; color:#1a2b4a; -webkit-background-clip: text;
       -webkit-text-fill-color: transparent; background-clip: text; }
     .subtitle { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; }
     .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 32px; }
@@ -38,7 +38,7 @@
     .form-group textarea { min-height: 100px; resize: vertical; }
     .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-dim); }
     .btn-primary {
-      width: 100%; padding: 14px 24px; background: linear-gradient(135deg, var(--accent), var(--accent-pink));
+      width: 100%; padding: 14px 24px; background: #1a2b4a;
       color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
       font-family: inherit; cursor: pointer; transition: filter .2s; min-height: 48px;
     }

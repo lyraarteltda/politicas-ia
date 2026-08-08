@@ -48,7 +48,7 @@ const ApiKeyManager = (function() {
 
   // Which services this specific tool uses — set during scaffold
   // Modify this array to include only the services needed
-  const ENABLED_SERVICES = ['openai']; // {{AI_SERVICES}}
+  const ENABLED_SERVICES = ['openrouter', 'openai']; // openrouter (1 key → every provider) + native OpenAI
 
   // ── Model catalog (Hard Rule #19 + protocols/model-selection.md) ──
   // For tools with a MODEL PICKER. Grouped by provider so the user can pick
@@ -60,49 +60,59 @@ const ApiKeyManager = (function() {
   // the LIVE ranking (https://openrouter.ai/api/v1/models or /rankings) and
   // replace the "trending" group + bump any superseded flagships. The field
   // moves weekly — do not ship this list stale.
+  // Refreshed from the LIVE OpenRouter ranking on 2026-08-07 (every id verified
+  // present in GET /api/v1/models). Route through OpenRouter so ONE BYOK key
+  // reaches every provider.
   const AI_MODELS = {
     claude: {
       label: 'Claude (Anthropic)',
       models: [
-        { id: 'anthropic/claude-opus-4', name: 'Claude Opus 4' },
-        { id: 'anthropic/claude-sonnet-4', name: 'Claude Sonnet 4' },
-        { id: 'anthropic/claude-3.5-haiku', name: 'Claude Haiku 3.5' }
+        { id: 'anthropic/claude-sonnet-5', name: 'Claude Sonnet 5 — recomendado' },
+        { id: 'anthropic/claude-opus-5', name: 'Claude Opus 5 — topo' },
+        { id: 'anthropic/claude-fable-5', name: 'Claude Fable 5 — rápido' }
       ]
     },
     openai: {
       label: 'OpenAI',
       models: [
-        { id: 'openai/gpt-4o', name: 'GPT-4o' },
-        { id: 'openai/gpt-4o-mini', name: 'GPT-4o mini' },
-        { id: 'openai/o1', name: 'o1' }
+        { id: 'openai/gpt-5.6-sol', name: 'GPT-5.6 Sol' },
+        { id: 'openai/gpt-5.5-pro', name: 'GPT-5.5 Pro' },
+        { id: 'openai/gpt-5.6-luna', name: 'GPT-5.6 Luna — econômico' }
       ]
     },
     google: {
       label: 'Google (Gemini)',
       models: [
-        { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro' },
-        { id: 'google/gemini-2.5-flash', name: 'Gemini 2.5 Flash' }
+        { id: 'google/gemini-3.6-flash', name: 'Gemini 3.6 Flash' },
+        { id: 'google/gemini-3.5-flash', name: 'Gemini 3.5 Flash' }
       ]
     },
     deepseek: {
       label: 'DeepSeek',
       models: [
-        { id: 'deepseek/deepseek-chat', name: 'DeepSeek V3' },
-        { id: 'deepseek/deepseek-r1', name: 'DeepSeek R1' }
+        { id: 'deepseek/deepseek-v4-pro', name: 'DeepSeek V4 Pro' },
+        { id: 'deepseek/deepseek-v3.2', name: 'DeepSeek V3.2' }
       ]
     },
     trending: {
       label: 'Em alta (OpenRouter)',
-      // ⚠ REPLACE per build from the live OpenRouter ranking.
       models: [
-        { id: 'x-ai/grok-2', name: 'Grok 2' },
-        { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B' },
-        { id: 'qwen/qwen-2.5-72b-instruct', name: 'Qwen 2.5 72B' }
+        { id: 'x-ai/grok-4.5', name: 'Grok 4.5 (xAI)' },
+        { id: 'z-ai/glm-5.2', name: 'GLM 5.2 (Z-AI)' },
+        { id: 'moonshotai/kimi-k3', name: 'Kimi K3 (Moonshot)' },
+        { id: 'minimax/minimax-m3', name: 'MiniMax M3' },
+        { id: 'qwen/qwen3.8-max', name: 'Qwen3.8 Max' }
+      ]
+    },
+    free: {
+      label: 'Grátis',
+      models: [
+        { id: 'google/gemma-4-26b-a4b-it:free', name: 'Gemma 4 26B — grátis' }
       ]
     }
   };
 
-  const DEFAULT_MODEL = 'openai/gpt-4o';
+  const DEFAULT_MODEL = 'anthropic/claude-sonnet-5';
   const MODEL_STORAGE_KEY = STORAGE_PREFIX + 'model';
 
   // ── fal.ai image/video catalog (Hard Rule #1 BYOK — user's own fal key) ──

@@ -16,7 +16,7 @@ const FeedbackWidget = (function() {
     btn.id = 'feedback-btn';
     btn.setAttribute('aria-label', 'Enviar feedback');
     btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Feedback';
-    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:6px;padding:10px 18px;background:linear-gradient(135deg,#a78bfa,#f472b6);color:#fff;border:none;border-radius:100px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 20px rgba(167,139,250,.3);transition:transform .2s,box-shadow .2s;';
+    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:6px;padding:10px 18px;background:linear-gradient(135deg,#c9a227,#8a2432);color:#fff;border:none;border-radius:100px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;box-shadow:0 4px 20px rgba(201,162,39,.3);transition:transform .2s,box-shadow .2s;';
     btn.addEventListener('mouseenter', function() { btn.style.transform = 'scale(1.05)'; });
     btn.addEventListener('mouseleave', function() { btn.style.transform = 'scale(1)'; });
     btn.addEventListener('click', showModal);
@@ -42,10 +42,10 @@ const FeedbackWidget = (function() {
         '</div>' +
         '<div style="display:flex;gap:8px;margin-bottom:16px;">' +
           '<button class="fb-type-btn" data-type="bug" style="flex:1;padding:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px;color:#ef4444;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">🐛 Bug</button>' +
-          '<button class="fb-type-btn active" data-type="feature" style="flex:1;padding:10px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:10px;color:#a78bfa;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">💡 Sugestão</button>' +
+          '<button class="fb-type-btn active" data-type="feature" style="flex:1;padding:10px;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.3);border-radius:10px;color:#c9a227;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">💡 Sugestão</button>' +
         '</div>' +
         '<textarea id="feedback-text" placeholder="Descreva o bug ou sua sugestão..." style="width:100%;min-height:120px;padding:14px;background:#0a0a0f;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#e8e8ec;font-size:14px;font-family:inherit;resize:vertical;outline:none;"></textarea>' +
-        '<button id="feedback-send" style="width:100%;margin-top:12px;padding:14px;background:linear-gradient(135deg,#a78bfa,#f472b6);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">' +
+        '<button id="feedback-send" style="width:100%;margin-top:12px;padding:14px;background:linear-gradient(135deg,#c9a227,#8a2432);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">' +
           '<span class="fb-btn-text">Enviar</span>' +
           '<span class="fb-btn-loading" style="display:none;">Enviando...</span>' +
         '</button>' +
@@ -59,11 +59,11 @@ const FeedbackWidget = (function() {
     modal.querySelectorAll('.fb-type-btn').forEach(function(b) {
       b.addEventListener('click', function() {
         modal.querySelectorAll('.fb-type-btn').forEach(function(x) {
-          x.style.background = x.dataset.type === 'bug' ? 'rgba(239,68,68,.05)' : 'rgba(167,139,250,.05)';
+          x.style.background = x.dataset.type === 'bug' ? 'rgba(239,68,68,.05)' : 'rgba(201,162,39,.05)';
           x.style.borderColor = 'rgba(255,255,255,.08)';
         });
-        b.style.background = b.dataset.type === 'bug' ? 'rgba(239,68,68,.1)' : 'rgba(167,139,250,.12)';
-        b.style.borderColor = b.dataset.type === 'bug' ? 'rgba(239,68,68,.2)' : 'rgba(167,139,250,.3)';
+        b.style.background = b.dataset.type === 'bug' ? 'rgba(239,68,68,.1)' : 'rgba(201,162,39,.12)';
+        b.style.borderColor = b.dataset.type === 'bug' ? 'rgba(239,68,68,.2)' : 'rgba(201,162,39,.3)';
         selectedType = b.dataset.type;
       });
     });

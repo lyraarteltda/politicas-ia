@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://gate.maestrosdaia.com">
   <link rel="preload" href="https://gate.maestrosdaia.com/v1/membership-gate.js" as="script">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1220'/%3E%3Crect x='7' y='17' width='4' height='8' rx='1' fill='%2322d3ee'/%3E%3Crect x='14' y='12' width='4' height='13' rx='1' fill='%2322c55e'/%3E%3Crect x='21' y='7' width='4' height='18' rx='1' fill='%23f5b301'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a2b4a'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23c9a227' stroke-width='1.5'/%3E%3Ctext x='16' y='22' font-size='15' font-family='Georgia,serif' font-weight='700' text-anchor='middle' fill='%23c9a227'%3E%C2%A7%3C/text%3E%3C/svg%3E">
 </head>
 <body>
   <div class="bg-gradient"></div>
@@ -50,21 +50,24 @@
       <p class="subtitle">Suas chaves ficam salvas apenas no seu navegador. Nunca são enviadas para nossos servidores.</p>
 
       <div id="key-inputs" class="key-inputs">
-        <!-- Dynamically populated by api-key-manager.js based on {{AI_SERVICES}} -->
+        <!-- Dynamically populated by api-key-manager.js -->
+      </div>
+
+      <div class="form-group" style="text-align:left;margin-top:6px;">
+        <label for="key-model-select">Modelo de IA</label>
+        <select id="key-model-select"></select>
       </div>
 
       <div class="key-actions">
-        <button id="key-continue" class="btn-primary" disabled>Continuar para a ferramenta</button>
+        <button id="key-continue" class="btn-primary" disabled>Entrar no cartório</button>
         <button id="key-skip" class="btn-secondary">Pular por enquanto</button>
       </div>
 
       <details class="key-info">
         <summary>Como consigo uma chave de API?</summary>
         <div class="key-info-content">
+          <p><strong>OpenRouter (recomendado — 1 chave, todos os modelos):</strong> Acesse <code>openrouter.ai/keys</code> e crie uma chave.</p>
           <p><strong>OpenAI:</strong> Acesse <code>platform.openai.com/api-keys</code> e crie uma nova chave.</p>
-          <p><strong>Anthropic (Claude):</strong> Acesse <code>console.anthropic.com</code> e crie uma chave de API.</p>
-          <p><strong>Google (Gemini):</strong> Acesse <code>aistudio.google.com/apikey</code> e gere uma chave.</p>
-          <p><strong>OpenRouter:</strong> Acesse <code>openrouter.ai/keys</code> e crie uma chave.</p>
         </div>
       </details>
     </div>
@@ -90,25 +93,127 @@
     </header>
 
     <main class="app-main">
-      <!-- ========================================
-           YOUR APPLICATION CONTENT GOES HERE
-           Replace this section with the actual tool UI.
-           ======================================== -->
-      <div class="placeholder-content">
-        <div class="card">
-          <h2>Bem-vindo, <span id="user-name">Maestro</span>!</h2>
-          <p>Esta ferramenta está pronta para uso. Comece explorando as funcionalidades abaixo.</p>
-        </div>
-
-        <div class="card">
-          <h3>Funcionalidade Principal</h3>
-          <p>Implemente a funcionalidade principal da ferramenta aqui.</p>
-          <div id="main-feature" class="feature-area">
-            <!-- Main feature UI -->
+      <div class="studio">
+        <!-- ============ LEFT: BRIEF PANEL ============ -->
+        <section class="brief-panel" aria-label="Dados do negócio">
+          <div class="panel-plate">
+            <span class="plate-mark">§</span>
+            <div>
+              <h2 class="panel-title">Registro do negócio</h2>
+              <p class="panel-sub">Preencha uma vez — geramos os três documentos.</p>
+            </div>
           </div>
-        </div>
+
+          <div class="brief-body">
+            <div class="field">
+              <label for="in-nome">Nome do negócio / marca <span class="req">*</span></label>
+              <input type="text" id="in-nome" placeholder="Ex: Maestria Academy" maxlength="90">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="in-site">Site / endereço do app <span class="req">*</span></label>
+                <input type="text" id="in-site" placeholder="Ex: maestrosdaia.com" maxlength="90">
+              </div>
+              <div class="field">
+                <label for="in-razao">Razão social / CNPJ <span class="opt">(opcional)</span></label>
+                <input type="text" id="in-razao" placeholder="Ex: Lyra Arte LTDA — 00.000.000/0001-00" maxlength="120">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="in-atividade">O que o negócio oferece <span class="req">*</span></label>
+              <textarea id="in-atividade" placeholder="Ex: cursos online e uma comunidade de IA por assinatura, com área de membros e pagamentos recorrentes." maxlength="400"></textarea>
+            </div>
+
+            <div class="field">
+              <label>Quais dados você coleta dos usuários?</label>
+              <div class="chip-grid" id="chips-dados" data-multi="1">
+                <button type="button" class="chip active" data-v="Nome">Nome</button>
+                <button type="button" class="chip active" data-v="E-mail">E-mail</button>
+                <button type="button" class="chip" data-v="Telefone/WhatsApp">Telefone/WhatsApp</button>
+                <button type="button" class="chip" data-v="CPF/CNPJ">CPF/CNPJ</button>
+                <button type="button" class="chip" data-v="Endereço">Endereço</button>
+                <button type="button" class="chip active" data-v="Dados de pagamento">Pagamento</button>
+                <button type="button" class="chip" data-v="Dados de navegação">Navegação</button>
+                <button type="button" class="chip" data-v="Localização">Localização</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Ferramentas / cookies em uso</label>
+              <div class="chip-grid" id="chips-cookies" data-multi="1">
+                <button type="button" class="chip active" data-v="Google Analytics">Google Analytics</button>
+                <button type="button" class="chip" data-v="Meta Pixel">Meta Pixel</button>
+                <button type="button" class="chip" data-v="Google Ads">Google Ads</button>
+                <button type="button" class="chip" data-v="TikTok Pixel">TikTok Pixel</button>
+                <button type="button" class="chip active" data-v="Cookies essenciais">Essenciais</button>
+                <button type="button" class="chip" data-v="Hotjar/mapas de calor">Mapas de calor</button>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="in-contato">E-mail de contato / encarregado (DPO) <span class="req">*</span></label>
+                <input type="email" id="in-contato" placeholder="Ex: privacidade@maestrosdaia.com" maxlength="90">
+              </div>
+              <div class="field">
+                <label for="in-foro">Cidade/Estado do foro <span class="opt">(opcional)</span></label>
+                <input type="text" id="in-foro" placeholder="Ex: São Paulo/SP" maxlength="60">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Tom da redação</label>
+              <div class="chip-grid" id="chips-tom" data-single="1">
+                <button type="button" class="chip active" data-v="Formal jurídico">Formal jurídico</button>
+                <button type="button" class="chip" data-v="Claro e acessível">Claro e acessível</button>
+                <button type="button" class="chip" data-v="Direto e enxuto">Direto e enxuto</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="model-select">Modelo de IA</label>
+              <select id="model-select"></select>
+            </div>
+
+            <button id="btn-generate" class="btn-primary btn-block">Emitir documentos</button>
+            <p class="disclaimer-note">⚖️ Modelos-base gerados por IA para agilizar seu lançamento. Não constituem aconselhamento jurídico — revise com um advogado antes de publicar.</p>
+          </div>
+        </section>
+
+        <!-- ============ RIGHT: DOCUMENT STAGE ============ -->
+        <section class="stage-panel" aria-label="Documentos">
+          <div class="doc-tabs" id="doc-tabs">
+            <button type="button" class="doc-tab active" data-doc="privacidade">Privacidade</button>
+            <button type="button" class="doc-tab" data-doc="termos">Termos de Uso</button>
+            <button type="button" class="doc-tab" data-doc="cookies">Cookies</button>
+          </div>
+
+          <div class="stage-actions">
+            <button id="btn-copy" class="btn-secondary btn-sm" disabled>Copiar texto</button>
+            <button id="btn-html" class="btn-secondary btn-sm" disabled>Baixar HTML</button>
+            <button id="btn-pdf" class="btn-secondary btn-sm" disabled>Baixar PDF</button>
+            <button id="btn-save" class="btn-secondary btn-sm" disabled>Salvar na biblioteca</button>
+            <button id="btn-regen" class="btn-secondary btn-sm" disabled title="Refazer o documento atual">Refazer</button>
+          </div>
+
+          <div id="stage-scroll" class="stage-scroll">
+            <div id="doc-empty" class="doc-empty">
+              <div class="gazette-seal">§</div>
+              <h3>Cartório fechado — nenhum documento emitido ainda</h3>
+              <p>Preencha o registro à esquerda e clique <strong>Emitir documentos</strong>. A IA redige a Política de Privacidade (LGPD), os Termos de Uso e a Política de Cookies do seu negócio, prontos para publicar.</p>
+            </div>
+            <article id="doc-sheet" class="doc-sheet" style="display:none;"></article>
+          </div>
+        </section>
       </div>
-      <!-- ======================================== -->
+
+      <!-- ============ LIBRARY ============ -->
+      <section class="library" id="library" style="display:none;">
+        <h3 class="library-title">Sua biblioteca de documentos</h3>
+        <div class="library-grid" id="library-grid"></div>
+      </section>
     </main>
 
     <footer class="app-footer">
@@ -130,6 +235,10 @@
         <button id="modal-close" class="btn-icon">&times;</button>
       </div>
       <div id="modal-key-inputs" class="key-inputs"></div>
+      <div class="form-group" style="text-align:left;margin-top:6px;">
+        <label for="model-select-modal">Modelo de IA</label>
+        <select id="model-select-modal"></select>
+      </div>
       <div class="modal-actions">
         <button id="modal-save" class="btn-primary">Salvar</button>
         <button id="modal-clear" class="btn-danger">Limpar todas as chaves</button>
