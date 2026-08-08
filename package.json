@@ -1,0 +1,13 @@
+{
+  "name": "politicas-ia",
+  "version": "1.0.0",
+  "description": "Gere as páginas legais do seu site/produto prontas para publicar (LGPD): Política de Privacidade, Termos de Uso e Política de Cookies. A IA escreve documentos coerentes com base nos seus dados de negócio; exporte em HTML e PDF, com biblioteca e versionamento. BYOK.",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "lint": "echo 'No linter configured — static HTML project'"
+  },
+  "keywords": ["maestria-da-ia", "community-tool", "byok"],
+  "author": "APP-BUILDER-01",
+  "license": "UNLICENSED"
+}
