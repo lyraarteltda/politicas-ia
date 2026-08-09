@@ -497,6 +497,10 @@
 
     initChips('chips-dados'); initChips('chips-cookies'); initChips('chips-tom');
 
+    // Populate + wire the app-screen model picker (Hard Rule #19). renderModelPicker
+    // fills provider-grouped <optgroup>s and wires its own change→setModel handler.
+    try { if (window.ApiKeyManager && ApiKeyManager.renderModelPicker) ApiKeyManager.renderModelPicker('model-select'); } catch (e) {}
+
     var g = $('btn-generate'); if (g) g.addEventListener('click', generate);
     var tabs = $('doc-tabs');
     if (tabs) tabs.querySelectorAll('.doc-tab').forEach(function (t) {
